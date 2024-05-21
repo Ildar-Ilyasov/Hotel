@@ -6,7 +6,7 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
 
-<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/19-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.hotel.CAdminUserMenu">
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.hotel.CAdminUserMenu">
    <children>
       <Button fx:id="BackButton" layoutX="24.0" layoutY="24.0" mnemonicParsing="false" text="Закрыть" textFill="RED">
          <font>
@@ -17,6 +17,14 @@
          <columns>
             <TableColumn fx:id="wherColumn" minWidth="0.0" prefWidth="0.0" text="Куда" />
             <TableColumn fx:id="driverColumn" minWidth="0.0" prefWidth="0.0" text="Водитель" />
+            <TableColumn fx:id="IdColumn" prefWidth="59.0" text="Id" />
+            <TableColumn fx:id="NameColumn" prefWidth="91.0" text="Имя" />
+            <TableColumn fx:id="LoginColumn" prefWidth="87.0" text="Логин" />
+            <TableColumn fx:id="PasswordColumn" prefWidth="231.0" text="Пароль" />
+            <TableColumn fx:id="PassportColumn" minWidth="0.0" prefWidth="108.0" text="Паспорт" />
+            <TableColumn fx:id="RoomColumn" minWidth="0.0" prefWidth="106.0" text="Номер" />
+            <TableColumn fx:id="CheckinColumn" prefWidth="114.0" text="Дата заселения" />
+            <TableColumn fx:id="DepartureColumn" prefWidth="107.0" text="Дата отъезда" />
          </columns>
       </TableView>
    </children>
