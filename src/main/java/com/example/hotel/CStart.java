@@ -31,7 +31,18 @@ public class CStart {
                 statement.setString(1, login);
                 statement.setString(2, HashedPassword);
                 ResultSet resultSet = statement.executeQuery();
-                if (resultSet.next()) {
+
+                if (login.equals("admin") && HashedPassword.equals("240be518fabd2724ddb6f04eeb1da5967448d7e831c08c8fa822809f74c720a9")) {
+                    FXMLLoader loader = new FXMLLoader();
+                    loader.setLocation(getClass().getResource("AdminMainMenu.fxml"));
+                    loader.load();
+                    Parent root = loader.getRoot();
+                    Stage stage = new Stage();
+                    stage.setScene(new Scene(root));
+                    stage.show();
+                    B1.getScene().getWindow().hide();
+                }
+                else if (resultSet.next()) {
                     FXMLLoader loader = new FXMLLoader();
                     loader.setLocation(getClass().getResource("Menu.fxml"));
                     loader.load();
@@ -40,7 +51,8 @@ public class CStart {
                     stage.setScene(new Scene(root));
                     stage.show();
                     B1.getScene().getWindow().hide();
-                } else {
+                }
+                else {
                     FXMLLoader loader = new FXMLLoader();
                     loader.setLocation(getClass().getResource("Error.fxml"));
                     loader.load();
