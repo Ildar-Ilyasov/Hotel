@@ -26,8 +26,8 @@ public class CAdminRequestMenu {
     @FXML private TableColumn<TableRequest, String> entryColumn;
     @FXML private TableColumn<TableRequest, String> exitColumn;
     @FXML private TableColumn<TableRequest, String> classColumn;
-    @FXML private TableColumn<TableRequest, String> countColumn;
     @FXML private TableColumn<TableRequest, String> costColumn;
+    @FXML private TableColumn<TableRequest, String> countColumn;
     @FXML private TableColumn<TableRequest, String> roomColumn;
 
     @FXML
@@ -36,10 +36,8 @@ public class CAdminRequestMenu {
         BackButton.setOnAction(e -> {
             BackButton.getScene().getWindow().hide();
             try {
-                FXMLLoader loader = new FXMLLoader();
-                loader.setLocation(getClass().getResource("AdminMainMenu.fxml"));
-                loader.load();
-                Parent root = loader.getRoot();
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("AdminMainMenu.fxml"));
+                Parent root = loader.load();
                 Stage stage = new Stage();
                 stage.setScene(new Scene(root));
                 stage.show();
@@ -54,85 +52,79 @@ public class CAdminRequestMenu {
             System.out.println("Reject button pressed");
         });
     }
-
     private void UpdateDatabase() {
         String url = "jdbc:postgresql://localhost:5432/Hotel";
         String user = "postgres";
         String password = "1111";
 
-        String requestQuery = "SELECT * FROM request_date";
-        String userQuery = "SELECT * FROM user_date";
-        String bookingQuery = "SELECT * FROM booking";
-        String roomQuery = "SELECT * FROM room_date";
+        String requestQuery = "SELECT id, user_id, booking_id, room_id FROM request_date";
+        String userQuery = "SELECT id, name FROM user_date";
+        String bookingQuery = "SELECT id, arrival_date, departure_date, quality, amoun_people, cost FROM booking";
+        String roomQuery = "SELECT id FROM room_date";
 
         try (Connection connection = DriverManager.getConnection(url, user, password);
-             Statement statement = connection.createStatement();
-             ResultSet requestResultSet = statement.executeQuery(requestQuery);
-             Statement userStatement = connection.createStatement();
+             Statement requestStatement = connection.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
+             ResultSet requestResultSet = requestStatement.executeQuery(requestQuery);
+             Statement userStatement = connection.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
              ResultSet userResultSet = userStatement.executeQuery(userQuery);
-             Statement bookingStatement = connection.createStatement();
+             Statement bookingStatement = connection.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
              ResultSet bookingResultSet = bookingStatement.executeQuery(bookingQuery);
-             Statement roomStatement = connection.createStatement();
+             Statement roomStatement = connection.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
              ResultSet roomResultSet = roomStatement.executeQuery(roomQuery)) {
 
+            // Prepare cell value factories
             idColumn.setCellValueFactory(new PropertyValueFactory<>("id"));
             nameColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
-            entryColumn.setCellValueFactory(new PropertyValueFactory<>("arrival_date"));
-            exitColumn.setCellValueFactory(new PropertyValueFactory<>("departure_date"));
+            entryColumn.setCellValueFactory(new PropertyValueFactory<>("entry"));
+            exitColumn.setCellValueFactory(new PropertyValueFactory<>("exit"));
             classColumn.setCellValueFactory(new PropertyValueFactory<>("quality"));
             countColumn.setCellValueFactory(new PropertyValueFactory<>("count"));
             costColumn.setCellValueFactory(new PropertyValueFactory<>("cost"));
-            roomColumn.setCellValueFactory(new PropertyValueFactory<>("room_number"));
+            roomColumn.setCellValueFactory(new PropertyValueFactory<>("room"));
 
             ObservableList<TableRequest> requestList = FXCollections.observableArrayList();
 
             while (requestResultSet.next()) {
-                long id = requestResultSet.getLong("id");
+                long requestId = requestResultSet.getLong("id");
                 long userId = requestResultSet.getLong("user_id");
                 long bookingId = requestResultSet.getLong("booking_id");
-                long roomId = requestResultSet.getLong("room_id");
+                String roomId = requestResultSet.getString("room_id");
 
-                // Get data from user_date
-                userResultSet.beforeFirst();
-                String name = null;
+                String userName = "";
+                userResultSet.beforeFirst(); // Reset ResultSet
                 while (userResultSet.next()) {
                     if (userResultSet.getLong("id") == userId) {
-                        name = userResultSet.getString("name");
+                        userName = userResultSet.getString("name");
                         break;
                     }
                 }
 
-                // Get data from booking
-                bookingResultSet.beforeFirst();
-                String arrivalDate = null;
-                String departureDate = null;
-                String quality = null;
-                String count = "";
+                // Get booking details
+                String arrivalDate = "";
+                String departureDate = "";
+                String quality = "";
+                String amountPeople = "";
                 String cost = "";
+                bookingResultSet.beforeFirst(); // Reset ResultSet
                 while (bookingResultSet.next()) {
                     if (bookingResultSet.getLong("id") == bookingId) {
                         arrivalDate = bookingResultSet.getString("arrival_date");
                         departureDate = bookingResultSet.getString("departure_date");
                         quality = bookingResultSet.getString("quality");
-                        count = bookingResultSet.getString("count");
+                        amountPeople = bookingResultSet.getString("amoun_people");
                         cost = bookingResultSet.getString("cost");
                         break;
                     }
                 }
 
-                // Get data from room_date
-                roomResultSet.beforeFirst();
-                String roomNumber = null;
-                while (roomResultSet.next()) {
-                    if (roomResultSet.getLong("id") == roomId) {
-                        roomNumber = roomResultSet.getString("room_number");
-                        break;
-                    }
-                }
-
-                TableRequest request = new TableRequest(id, name, arrivalDate, departureDate, quality, count,  cost, roomNumber);
+// Create TableRequest object and add to list
+                TableRequest request = new TableRequest(requestId, userName, arrivalDate, departureDate, quality, amountPeople, cost, roomId);
                 requestList.add(request);
+
+                // Debug output
+                System.out.println("Added request: " + request);
             }
+
             RequestView.setItems(requestList);
         } catch (SQLException e) {
             e.printStackTrace();

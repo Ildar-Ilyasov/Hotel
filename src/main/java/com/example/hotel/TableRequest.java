@@ -2,23 +2,23 @@ package com.example.hotel;
 
 public class TableRequest {
     private long id;
-    private String name;
-    private String entry;
-    private String exit;
-    private String classofroom;
-    private String count;
+    private String userName;
+    private String arrivalDate;
+    private String departureDate;
+    private String quality;
+    private String amountPeople;
     private String cost;
-    private String room;
+    private String roomNumber;
 
-    public TableRequest(long id, String name, String entry, String exit, String classofroom, String count, String cost, String room) {
+    public TableRequest(long id, String userName, String arrivalDate, String departureDate, String quality, String amountPeople, String cost, String roomNumber) {
         this.id = id;
-        this.name = name;
-        this.entry = entry;
-        this.exit = exit;
-        this.classofroom = classofroom;
-        this.count = count;
+        this.userName = userName;
+        this.arrivalDate = arrivalDate;
+        this.departureDate = departureDate;
+        this.quality = quality;
+        this.amountPeople = amountPeople;
         this.cost = cost;
-        this.room = room;
+        this.roomNumber = roomNumber;
 
     }
     public long getId() {
@@ -28,34 +28,34 @@ public class TableRequest {
         this.id = id;
     }
     public String getName() {
-        return name;
+        return userName;
     }
-    public void setName(String name) {
-        this.name = name;
+    public void setName(String userName) {
+        this.userName = userName;
     }
     public String getEntry() {
-        return entry;
+        return arrivalDate;
     }
-    public void setEntry(String entry) {
-        this.entry = entry;
+    public void setEntry(String arrivalDate) {
+        this.arrivalDate = arrivalDate;
     }
     public String getExit() {
-        return exit;
+        return departureDate;
     }
-    public void setExit(String exit) {
-        this.exit = exit;
+    public void setExit(String departureDate) {
+        this.departureDate = departureDate;
     }
-    public String getClassofroom() {
-        return classofroom;
+    public String getQuality() {
+        return quality;
     }
-    public void setClassofroom(String classofroom) {
-        this.classofroom = classofroom;
+    public void setQuality(String quality) {
+        this.quality = quality;
     }
     public String getCount() {
-        return count;
+        return amountPeople;
     }
-    public void setCount(String count) {
-        this.count = count;
+    public void setCount(String amountPeople) {
+        this.amountPeople = amountPeople;
     }
     public String getCost() {
         return cost;
@@ -64,9 +64,9 @@ public class TableRequest {
         this.cost = cost;
     }
     public String getRoom() {
-        return room;
+        return roomNumber;
     }
-    public void setRoom(String room) {
-        this.room = room;
+    public void setRoom(String roomNumber) {
+        this.roomNumber = roomNumber;
     }
 }
