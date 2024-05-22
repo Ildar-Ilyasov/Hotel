@@ -6,17 +6,23 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
 
-<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/19-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.hotel.CAdminRequestMenu">
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.hotel.CAdminRequestMenu">
    <children>
       <Button fx:id="BackButton" layoutX="24.0" layoutY="24.0" mnemonicParsing="false" text="Закрыть" textFill="RED">
          <font>
             <Font name="System Bold" size="12.0" />
          </font>
       </Button>
-      <TableView fx:id="RequestView" layoutX="43.0" layoutY="74.0" prefHeight="342.0" prefWidth="904.0">
+      <TableView fx:id="RequestView" layoutX="50.0" layoutY="79.0" prefHeight="342.0" prefWidth="900.0">
          <columns>
-            <TableColumn fx:id="wherColumn" minWidth="0.0" prefWidth="0.0" text="Куда" />
-            <TableColumn fx:id="driverColumn" minWidth="0.0" prefWidth="0.0" text="Водитель" />
+            <TableColumn fx:id="idColumn" prefWidth="50.0" text="Id" />
+            <TableColumn fx:id="nameColumn" prefWidth="140.0" text="Имя" />
+            <TableColumn fx:id="entryColumn" prefWidth="100.0" text="Въезд" />
+            <TableColumn fx:id="exitColumn" prefWidth="100.0" text="Выезд" />
+            <TableColumn fx:id="classColumn" prefWidth="100.0" text="Класс" />
+            <TableColumn fx:id="countColumn" minWidth="4.0" prefWidth="130.0" text="Количество" />
+            <TableColumn fx:id="costColumn" prefWidth="150.0" text="Цена" />
+            <TableColumn fx:id="roomColumn" prefWidth="130.0" text="Номер" />
          </columns>
       </TableView>
       <Button fx:id="ButtonApprove" layoutX="347.0" layoutY="440.0" mnemonicParsing="false" prefHeight="31.0" prefWidth="128.0" text="Одобрить" textFill="RED">
