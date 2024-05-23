@@ -49,9 +49,49 @@ public class CAdminRequestMenu {
             System.out.println("Approve button pressed");
         });
         ButtonReject.setOnAction(e -> {
-            System.out.println("Reject button pressed");
+            deleteSelectedItem();
         });
     }
+    private void deleteSelectedItem() {
+        TableRequest selectedProduct = RequestView.getSelectionModel().getSelectedItem();
+
+        if (selectedProduct != null) {
+            RequestView.getItems().remove(selectedProduct);
+            deleteFromDatabase(selectedProduct);
+        }
+    }
+
+   private void deleteFromDatabase(TableRequest selectedProduct) {
+        String requestQuery = "DELETE FROM request_date WHERE id = ?";
+        String userQuery = "DELETE FROM user_date WHERE id = ?";
+        String bookingQuery = "DELETE FROM booking WHERE id = ?";
+        String roomQuery = "DELETE FROM room_date WHERE id = ?";
+        try (Connection connection = DriverManager.getConnection("jdbc:postgresql://localhost:5432/UserData", "postgres", "1111")) {
+            try (PreparedStatement requestStatement = connection.prepareStatement(requestQuery)) {
+                requestStatement.setLong(1, selectedProduct.getId());
+                int rowsDeletedRequest = requestStatement.executeUpdate();
+                System.out.println("Rows deleted from request_date: " + rowsDeletedRequest);
+            }
+            try (PreparedStatement userStatement = connection.prepareStatement(userQuery)) {
+                userStatement.setLong(1, selectedProduct.getUserId());
+                int rowsDeletedUser = userStatement.executeUpdate();
+                System.out.println("Rows deleted from user_date: " + rowsDeletedUser);
+            }
+            try (PreparedStatement bookingStatement = connection.prepareStatement(bookingQuery)) {
+                bookingStatement.setLong(1, selectedProduct.getBookingId());
+                int rowsDeletedBooking = bookingStatement.executeUpdate();
+                System.out.println("Rows deleted from booking: " + rowsDeletedBooking);
+            }
+            try (PreparedStatement roomStatement = connection.prepareStatement(roomQuery)) {
+                roomStatement.setString(1, selectedProduct.getRoom());
+                int rowsDeletedRoom = roomStatement.executeUpdate();
+                System.out.println("Rows deleted from room_date: " + rowsDeletedRoom);
+            }
+        } catch (SQLException ex) {
+            System.out.println("Error when working with the database: " + ex.getMessage());
+        }
+    }
+
     private void UpdateDatabase() {
         String url = "jdbc:postgresql://localhost:5432/Hotel";
         String user = "postgres";
@@ -117,10 +157,8 @@ public class CAdminRequestMenu {
                     }
                 }
 
-// Create TableRequest object and add to list
-                TableRequest request = new TableRequest(requestId, userName, arrivalDate, departureDate, quality, amountPeople, cost, roomId);
+                TableRequest request = new TableRequest(requestId, userName, arrivalDate, departureDate, amountPeople, quality, cost, roomId, userId, bookingId);
                 requestList.add(request);
-
                 // Debug output
                 System.out.println("Added request: " + request);
             }

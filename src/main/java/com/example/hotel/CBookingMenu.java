@@ -6,12 +6,14 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
 
+import java.io.Console;
 import java.io.IOException;
+import java.sql.*;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 
 public class CBookingMenu {
-    @FXML private DatePicker Checkin;
+    @FXML private DatePicker Checkin;//заселение
     @FXML private DatePicker Exit;
     @FXML private Button B1;
     @FXML private Button B2;//посчитать цену
@@ -67,7 +69,32 @@ public class CBookingMenu {
 
         });
         B3.setOnAction(e -> {
-            System.out.println("To book");
+            try (Connection connection = DriverManager.getConnection("jdbc:postgresql://localhost:5432/Hotel", "postgres", "1111")) {
+                // Вставка данных в таблицу booking с возвратом сгенерированного booking_id
+                String query = "INSERT INTO booking (arrival_date, departure_date, amoun_people, quality, cost, fk_user_id) VALUES (?, ?, ?, ?, ?, ?) RETURNING id";
+                try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+                    preparedStatement.setDate(1, java.sql.Date.valueOf(Checkin.getValue()));
+                    preparedStatement.setDate(2, java.sql.Date.valueOf(Exit.getValue()));
+                    preparedStatement.setString(3, Class.getValue());
+                    preparedStatement.setInt(4, Integer.parseInt(CountPeople.getValue()));
+                    preparedStatement.setBigDecimal(5, new java.math.BigDecimal(Cost.getText()));
+                    preparedStatement.setLong(6, Session.getCurrentUserId());
+
+                    try (ResultSet rs = preparedStatement.executeQuery()) {
+                        if (rs.next()) {
+                            long bookingId = rs.getLong("id");
+                            String requestQuery = "INSERT INTO request_date (user_id, booking_id) VALUES (?, ?)";
+                            try (PreparedStatement requestStatement = connection.prepareStatement(requestQuery)) {
+                                requestStatement.setLong(1, Session.getCurrentUserId());
+                                requestStatement.setLong(2, bookingId);
+                                requestStatement.executeUpdate();
+                            }
+                        }
+                    }
+                }
+            } catch (SQLException ex) {
+                System.out.println("Error when working with the database: " + ex.getMessage());
+            }
         });
     }
 

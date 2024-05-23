@@ -10,7 +10,9 @@ public class TableRequest {
     private String cost;
     private String roomNumber;
 
-    public TableRequest(long id, String userName, String arrivalDate, String departureDate, String quality, String amountPeople, String cost, String roomNumber) {
+    private long userId;
+    private long bookingId;
+    public TableRequest(long id, String userName, String arrivalDate, String departureDate, String quality, String amountPeople, String cost, String roomNumber, long userId, long bookingId) {
         this.id = id;
         this.userName = userName;
         this.arrivalDate = arrivalDate;
@@ -19,6 +21,8 @@ public class TableRequest {
         this.amountPeople = amountPeople;
         this.cost = cost;
         this.roomNumber = roomNumber;
+        this.userId = userId;
+        this.bookingId = bookingId;
 
     }
     public long getId() {
@@ -32,6 +36,18 @@ public class TableRequest {
     }
     public void setName(String userName) {
         this.userName = userName;
+    }
+    public long getBookingId() {
+        return bookingId;
+    }
+    public void setBookingId(long id) {
+        this.bookingId = id;
+    }
+    public long getUserId() {
+        return userId;
+    }
+    public void setUserId(long id) {
+        this.userId = id;
     }
     public String getEntry() {
         return arrivalDate;

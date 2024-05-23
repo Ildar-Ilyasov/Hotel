@@ -23,10 +23,11 @@ public class CStart {
         B1.setOnAction(e -> {
             String login = TF1.getText();
             String password = PF1.getText();
+            Long userId = Long.valueOf(0);
             String HashedPassword = hashString(password);
             try {
                 Connection connection = DriverManager.getConnection("jdbc:postgresql://localhost:5432/Hotel", "postgres", "1111");
-                String query = "SELECT login,password FROM user_date WHERE login = ? AND password = ?";
+                String query = "SELECT id, login, password FROM user_date WHERE login = ? AND password = ?";
                 PreparedStatement statement = connection.prepareStatement(query);
                 statement.setString(1, login);
                 statement.setString(2, HashedPassword);
@@ -43,6 +44,8 @@ public class CStart {
                     B1.getScene().getWindow().hide();
                 }
                 else if (resultSet.next()) {
+                    userId = resultSet.getLong("id");
+                    Session.setCurrentUserId(Long.valueOf(userId));
                     FXMLLoader loader = new FXMLLoader();
                     loader.setLocation(getClass().getResource("Menu.fxml"));
                     loader.load();
@@ -51,6 +54,7 @@ public class CStart {
                     stage.setScene(new Scene(root));
                     stage.show();
                     B1.getScene().getWindow().hide();
+
                 }
                 else {
                     FXMLLoader loader = new FXMLLoader();

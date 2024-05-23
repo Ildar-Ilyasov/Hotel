@@ -20,7 +20,7 @@ public class CAdminUserMenu {
     private Button BackButton;
     @FXML
     private TableView<TableUser> UserView;
-    @FXML private TableColumn<TableUser, String> IdColumn;
+    @FXML private TableColumn<TableUser, String> idColumn;
     @FXML private TableColumn<TableUser, String> NameColumn;
     @FXML private TableColumn<TableUser, String> LoginColumn;
     @FXML private TableColumn<TableUser, String> PasswordColumn;
@@ -52,7 +52,7 @@ public class CAdminUserMenu {
         String fQuery = "SELECT id, name, login, password, passport, fk_room, fk_booking FROM user_date";
         Statement statement = connection.createStatement();
         ResultSet resultSet = statement.executeQuery(fQuery);
-        IdColumn.setCellValueFactory(new PropertyValueFactory<>("id"));
+        idColumn.setCellValueFactory(new PropertyValueFactory<>("id"));
         NameColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
         LoginColumn.setCellValueFactory(new PropertyValueFactory<>("login"));
         PasswordColumn.setCellValueFactory(new PropertyValueFactory<>("password"));
