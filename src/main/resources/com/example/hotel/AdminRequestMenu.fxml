@@ -3,11 +3,18 @@
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
 
 <Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.hotel.CAdminRequestMenu">
    <children>
+      <ImageView fitHeight="667.0" fitWidth="1027.0" layoutX="-2.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@res/1.jpg" />
+         </image>
+      </ImageView>
       <Button fx:id="BackButton" layoutX="24.0" layoutY="24.0" mnemonicParsing="false" text="Закрыть" textFill="RED">
          <font>
             <Font name="System Bold" size="12.0" />

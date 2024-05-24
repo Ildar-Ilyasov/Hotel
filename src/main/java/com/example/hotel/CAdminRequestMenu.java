@@ -1,5 +1,4 @@
-
-        package com.example.hotel;
+package com.example.hotel;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -46,23 +45,33 @@ public class CAdminRequestMenu {
             }
         });
         ButtonApprove.setOnAction(e -> {
-            FXMLLoader loader = new FXMLLoader();
-            loader.setLocation(getClass().getResource("ChoiceRoom.fxml"));
-            try {
-                loader.load();
-            } catch (IOException ex) {
-                throw new RuntimeException(ex);
+            TableRequest selectedProduct = RequestView.getSelectionModel().getSelectedItem();
+            if (selectedProduct != null) {
+                openChoiceRoomWindow(selectedProduct);
             }
-            Parent root = loader.getRoot();
-            Stage stage = new Stage();
-            stage.setScene(new Scene(root));
-            stage.show();
         });
         ButtonReject.setOnAction(e -> {
             deleteSelectedItem();
         });
     }
-   /* private void deleteSelectedItem() {
+
+    private void openChoiceRoomWindow(TableRequest selectedProduct) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("ChoiceRoom.fxml"));
+            Parent root = loader.load();
+
+            CChoiceRoom controller = loader.getController();
+            controller.initData(selectedProduct, this); // Передаем текущий контроллер
+
+            Stage stage = new Stage();
+            stage.setScene(new Scene(root));
+            stage.show();
+        } catch (IOException ex) {
+            throw new RuntimeException(ex);
+        }
+    }
+
+    private void deleteSelectedItem() {
         TableRequest selectedProduct = RequestView.getSelectionModel().getSelectedItem();
 
         if (selectedProduct != null) {
@@ -70,46 +79,6 @@ public class CAdminRequestMenu {
             deleteFromDatabase(selectedProduct);
         }
     }
-
-   private void deleteFromDatabase(TableRequest selectedProduct) {
-        String requestQuery = "DELETE FROM request_date WHERE id = ?";
-        String userQuery = "DELETE FROM user_date WHERE id = ?";
-        String bookingQuery = "DELETE FROM booking WHERE id = ?";
-        String roomQuery = "DELETE FROM room_date WHERE id = ?";
-        try (Connection connection = DriverManager.getConnection("jdbc:postgresql://localhost:5432/UserData", "postgres", "1111")) {
-            try (PreparedStatement requestStatement = connection.prepareStatement(requestQuery)) {
-                requestStatement.setLong(1, selectedProduct.getId());
-                int rowsDeletedRequest = requestStatement.executeUpdate();
-                System.out.println("Rows deleted from request_date: " + rowsDeletedRequest);
-            }
-            try (PreparedStatement userStatement = connection.prepareStatement(userQuery)) {
-                userStatement.setLong(1, selectedProduct.getUserId());
-                int rowsDeletedUser = userStatement.executeUpdate();
-                System.out.println("Rows deleted from user_date: " + rowsDeletedUser);
-            }
-            try (PreparedStatement bookingStatement = connection.prepareStatement(bookingQuery)) {
-                bookingStatement.setLong(1, selectedProduct.getBookingId());
-                int rowsDeletedBooking = bookingStatement.executeUpdate();
-                System.out.println("Rows deleted from booking: " + rowsDeletedBooking);
-            }
-            try (PreparedStatement roomStatement = connection.prepareStatement(roomQuery)) {
-                roomStatement.setString(1, selectedProduct.getRoom());
-                int rowsDeletedRoom = roomStatement.executeUpdate();
-                System.out.println("Rows deleted from room_date: " + rowsDeletedRoom);
-            }
-        } catch (SQLException ex) {
-            System.out.println("Error when working with the database: " + ex.getMessage());
-        }
-    }*/
-   private void deleteSelectedItem() {
-       TableRequest selectedProduct = RequestView.getSelectionModel().getSelectedItem();
-
-       if (selectedProduct != null) {
-           RequestView.getItems().remove(selectedProduct);
-           deleteFromDatabase(selectedProduct);
-       }
-   }
-
 
     private void deleteFromDatabase(TableRequest selectedProduct) {
         String deleteRequestQuery = "DELETE FROM request_date WHERE user_id = ? AND booking_id = ?";
@@ -133,7 +102,8 @@ public class CAdminRequestMenu {
             e.printStackTrace();
         }
     }
-    private void UpdateDatabase() {
+
+    protected void UpdateDatabase() {
         String url = "jdbc:postgresql://localhost:5432/Hotel";
         String user = "postgres";
         String password = "1111";
@@ -198,11 +168,12 @@ public class CAdminRequestMenu {
                     }
                 }
 
-                TableRequest request = new TableRequest(requestId, userName, arrivalDate, departureDate, quality, amountPeople, cost, roomId, userId, bookingId);
-                requestList.add(request);
-                // Debug output
-                System.out.println("Added request: " + request);
-            }
+                if(roomId == null){
+                    TableRequest request = new TableRequest(requestId, userName, arrivalDate, departureDate, quality, amountPeople, cost, roomId, userId, bookingId);
+                    requestList.add(request);
+                    // Debug output
+                    System.out.println("Added request: " + request);
+                }}
 
             RequestView.setItems(requestList);
         } catch (SQLException e) {

@@ -25,9 +25,7 @@ public class CAdminUserMenu {
     @FXML private TableColumn<TableUser, String> LoginColumn;
     @FXML private TableColumn<TableUser, String> PasswordColumn;
     @FXML private TableColumn<TableUser, String> PassportColumn;
-    @FXML private TableColumn<TableUser, String> RoomColumn;
-    @FXML private TableColumn<TableUser, String> CheckinColumn;
-    @FXML private TableColumn<TableUser, String> DepartureColumn;
+
     @FXML
     void initialize() throws SQLException {
         UpdateDatabase();
@@ -57,9 +55,6 @@ public class CAdminUserMenu {
         LoginColumn.setCellValueFactory(new PropertyValueFactory<>("login"));
         PasswordColumn.setCellValueFactory(new PropertyValueFactory<>("password"));
         PassportColumn.setCellValueFactory(new PropertyValueFactory<>("passport"));
-        RoomColumn.setCellValueFactory(new PropertyValueFactory<>("fk_room"));
-        CheckinColumn.setCellValueFactory(new PropertyValueFactory<>("fk_booking"));
-        DepartureColumn.setCellValueFactory(new PropertyValueFactory<>("fk_booking"));
 
         ObservableList<TableUser> prodList = FXCollections.observableArrayList();
         while (resultSet.next()) {
@@ -68,10 +63,7 @@ public class CAdminUserMenu {
             String Login = resultSet.getString("login");
             String password = resultSet.getString("password");
             String passport = resultSet.getString("passport");
-            long Room = resultSet.getLong("fk_room");
-            long Checkin = resultSet.getLong("fk_booking");
-            long Departure = resultSet.getLong("fk_booking");
-            TableUser prod = new TableUser(Id, Name, Login, password, passport, Room, Checkin, Departure);
+            TableUser prod = new TableUser(Id, Name, Login, password, passport);
             prodList.add(prod);
         }
         UserView.setItems(prodList);
