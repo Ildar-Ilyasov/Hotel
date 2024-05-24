@@ -75,8 +75,9 @@ public class CBookingMenu {
                 try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
                     preparedStatement.setDate(1, java.sql.Date.valueOf(Checkin.getValue()));
                     preparedStatement.setDate(2, java.sql.Date.valueOf(Exit.getValue()));
-                    preparedStatement.setString(3, Class.getValue());
-                    preparedStatement.setInt(4, Integer.parseInt(CountPeople.getValue()));
+                    //preparedStatement.setString(3, Class.getValue());
+                    preparedStatement.setInt(3, Integer.parseInt(CountPeople.getValue()));
+                    preparedStatement.setString(4, Class.getValue());
                     preparedStatement.setBigDecimal(5, new java.math.BigDecimal(Cost.getText()));
                     preparedStatement.setLong(6, Session.getCurrentUserId());
 
