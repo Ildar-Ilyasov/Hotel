@@ -12,11 +12,6 @@
             <Font name="System Bold" size="36.0" />
          </font>
       </Label>
-      <Label fx:id="L3" layoutX="130.0" layoutY="211.0" text="Введите данные заново.">
-         <font>
-            <Font name="System Bold" size="20.0" />
-         </font>
-      </Label>
       <Button fx:id="B1" layoutX="214.0" layoutY="241.0" mnemonicParsing="false" prefHeight="34.0" prefWidth="73.0" style="-fx-background-radius: 5;" text="OK" textFill="RED">
          <font>
             <Font name="System Bold" size="12.0" />
