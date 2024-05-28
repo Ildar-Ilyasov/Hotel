@@ -94,8 +94,6 @@ public class CAdminMainMenu {
              ResultSet bookingResultSet = bookingStatement.executeQuery(bookingQuery);
              Statement roomStatement = connection.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
              ResultSet roomResultSet = roomStatement.executeQuery(roomQuery)) {
-
-            // Prepare cell value factories
             idColumn.setCellValueFactory(new PropertyValueFactory<>("id"));
             nameColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
             entryColumn.setCellValueFactory(new PropertyValueFactory<>("entry"));
@@ -114,21 +112,19 @@ public class CAdminMainMenu {
                 String roomId = requestResultSet.getString("room_id");
 
                 String userName = "";
-                userResultSet.beforeFirst(); // Reset ResultSet
+                userResultSet.beforeFirst();
                 while (userResultSet.next()) {
                     if (userResultSet.getLong("id") == userId) {
                         userName = userResultSet.getString("name");
                         break;
                     }
                 }
-
-                // Get booking details
                 String arrivalDate = "";
                 String departureDate = "";
                 String quality = "";
                 String amountPeople = "";
                 String cost = "";
-                bookingResultSet.beforeFirst(); // Reset ResultSet
+                bookingResultSet.beforeFirst();
                 while (bookingResultSet.next()) {
                     if (bookingResultSet.getLong("id") == bookingId) {
                         arrivalDate = bookingResultSet.getString("arrival_date");
@@ -143,8 +139,6 @@ public class CAdminMainMenu {
                 if(roomId != null){
                     TableRequest request = new TableRequest(requestId, userName, arrivalDate, departureDate, quality, amountPeople, cost, roomId, userId, bookingId);
                     requestList.add(request);
-                    // Debug output
-                    System.out.println("Added request: " + request);
                 }}
 
             RequestView.setItems(requestList);

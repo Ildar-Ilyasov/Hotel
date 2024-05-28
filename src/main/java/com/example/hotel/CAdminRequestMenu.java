@@ -61,7 +61,7 @@ public class CAdminRequestMenu {
             Parent root = loader.load();
 
             CChoiceRoom controller = loader.getController();
-            controller.initData(selectedProduct, this); // Передаем текущий контроллер
+            controller.initData(selectedProduct, this);
 
             Stage stage = new Stage();
             stage.setScene(new Scene(root));
@@ -85,14 +85,11 @@ public class CAdminRequestMenu {
         String deleteBookingQuery = "DELETE FROM booking WHERE id = ?";
 
         try (Connection connection = DriverManager.getConnection("jdbc:postgresql://localhost:5432/Hotel", "postgres", "1111")) {
-            // Удаляем из request_date
             try (PreparedStatement requestStatement = connection.prepareStatement(deleteRequestQuery)) {
                 requestStatement.setLong(1, selectedProduct.getUserId());
                 requestStatement.setLong(2, selectedProduct.getBookingId());
                 requestStatement.executeUpdate();
             }
-
-            // Удаляем из booking
             try (PreparedStatement bookingStatement = connection.prepareStatement(deleteBookingQuery)) {
                 bookingStatement.setLong(1, selectedProduct.getBookingId());
                 bookingStatement.executeUpdate();
@@ -123,7 +120,6 @@ public class CAdminRequestMenu {
              Statement roomStatement = connection.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
              ResultSet roomResultSet = roomStatement.executeQuery(roomQuery)) {
 
-            // Prepare cell value factories
             idColumn.setCellValueFactory(new PropertyValueFactory<>("id"));
             nameColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
             entryColumn.setCellValueFactory(new PropertyValueFactory<>("entry"));
@@ -142,21 +138,19 @@ public class CAdminRequestMenu {
                 String roomId = requestResultSet.getString("room_id");
 
                 String userName = "";
-                userResultSet.beforeFirst(); // Reset ResultSet
+                userResultSet.beforeFirst();
                 while (userResultSet.next()) {
                     if (userResultSet.getLong("id") == userId) {
                         userName = userResultSet.getString("name");
                         break;
                     }
                 }
-
-                // Get booking details
                 String arrivalDate = "";
                 String departureDate = "";
                 String quality = "";
                 String amountPeople = "";
                 String cost = "";
-                bookingResultSet.beforeFirst(); // Reset ResultSet
+                bookingResultSet.beforeFirst();
                 while (bookingResultSet.next()) {
                     if (bookingResultSet.getLong("id") == bookingId) {
                         arrivalDate = bookingResultSet.getString("arrival_date");
@@ -171,7 +165,6 @@ public class CAdminRequestMenu {
                 if(roomId == null){
                     TableRequest request = new TableRequest(requestId, userName, arrivalDate, departureDate, quality, amountPeople, cost, roomId, userId, bookingId);
                     requestList.add(request);
-                    // Debug output
                     System.out.println("Added request: " + request);
                 }}
 

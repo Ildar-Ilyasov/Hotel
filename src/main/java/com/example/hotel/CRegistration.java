@@ -39,10 +39,6 @@ public class CRegistration {
                 try (Connection connection = DriverManager.getConnection("jdbc:postgresql://localhost:5432/Hotel", "postgres", "1111")) {
                     String query = String.format("INSERT INTO user_date (name, login, password, passport) VALUES ('%s', '%s', '%s', '%s')",name,login,hashedPassword,passport);
                     PreparedStatement preparedStatement = connection.prepareStatement(query);
-                    /*preparedStatement.setString(1, name);
-                    preparedStatement.setString(2, login);
-                    preparedStatement.setString(3, password);
-                    preparedStatement.setString(4, passport);*/
                     preparedStatement.executeUpdate();
                     try {
                         start.start(new Stage());
