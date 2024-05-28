@@ -30,9 +30,7 @@ public class CBookingMenu {
     ObservableList<String> CountPeopleList = FXCollections.observableArrayList("1", "2", "3", "4");
     @FXML
     void initialize(){
-        String ClassRoom =  Class.getValue();
-        String Count = CountPeople.getValue();
-        String cost = Cost.getText();
+
         Checkin.setValue(LocalDate.now());
         Class.setValue("Выберите класс");
         CountPeople.setValue("Выберите количество");
@@ -48,7 +46,7 @@ public class CBookingMenu {
             }
         });
         B2.setOnAction(e -> {
-            if (ClassRoom != "Выберите класс" && Count != "Выберите количество" && Exit.getValue() != null && Exit.getValue().isAfter(Checkin.getValue())) {
+            if (Class.getValue() != "Выберите класс" && CountPeople.getValue() != "Выберите количество" && Exit.getValue() != null && Exit.getValue().isAfter(Checkin.getValue())) {
                 if (Checkin != null && Exit != null) {
                     LocalDate date1 = Checkin.getValue();
                     LocalDate date2 = Exit.getValue();
@@ -74,6 +72,7 @@ public class CBookingMenu {
 
                     costResult = (int) (daysBetween * (classNum + countPeople));
                     Cost.setText(String.valueOf(costResult));
+
                 }
             }
             else {
@@ -91,7 +90,7 @@ public class CBookingMenu {
             }
         });
         B3.setOnAction(e -> {
-            if (ClassRoom != "Выберите класс" && Count != "Выберите количество" && !cost.isEmpty() && Exit.getValue().isAfter(Checkin.getValue())) {
+            if (Class.getValue() != "Выберите класс" && CountPeople.getValue() != "Выберите количество" && !Cost.getText().isEmpty() && Exit.getValue().isAfter(Checkin.getValue())) {
                 try (Connection connection = DriverManager.getConnection("jdbc:postgresql://localhost:5432/Hotel", "postgres", "1111")) {
                     String query = "INSERT INTO booking (arrival_date, departure_date, amoun_people, quality, cost, fk_user_id) VALUES (?, ?, ?, ?, ?, ?) RETURNING id";
                     try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
