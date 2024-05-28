@@ -2,6 +2,7 @@
 
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.effect.ColorAdjust?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.Pane?>
@@ -20,28 +21,31 @@
             <Font name="Bauhaus 93" size="36.0" />
          </font>
       </Label>
-      <Text fill="WHITE" layoutX="66.0" layoutY="125.0" strokeType="OUTSIDE" strokeWidth="0.0" text="     Наш отель предлагает номера на любой вкус и бюджет, обеспечивая комфорт и удобство для каждого гостя." wrappingWidth="831.13671875">
+      <Text fill="WHITE" layoutX="66.0" layoutY="125.0" stroke="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="     Наш отель предлагает номера на любой вкус и бюджет, обеспечивая комфорт и удобство для каждого гостя." wrappingWidth="831.13671875">
          <font>
-            <Font size="14.0" />
-         </font></Text>
-      <Text fill="WHITE" layoutX="66.0" layoutY="141.0" strokeType="OUTSIDE" strokeWidth="0.0" text="     Эконом номера — идеальный выбор для тех, кто ценит функциональность и практичность. Просторные и светлые, эти номера оснащены всем необходимым для комфортного отдыха: удобными кроватями, рабочими зонами и современными ванными комнатами. Эконом номера предоставляют отличное соотношение цены и качества, идеально подходя для туристов и деловых путешественников." wrappingWidth="831.13671875">
+            <Font name="System Bold Italic" size="14.0" />
+         </font>
+         <effect>
+            <ColorAdjust />
+         </effect></Text>
+      <Text fill="WHITE" layoutX="73.0" layoutY="144.0" strokeType="OUTSIDE" strokeWidth="0.0" text="     Эконом номера — идеальный выбор для тех, кто ценит функциональность и практичность. Просторные и светлые, эти номера оснащены всем необходимым для комфортного отдыха: удобными кроватями, рабочими зонами и современными ванными комнатами. Эконом номера предоставляют отличное соотношение цены и качества, идеально подходя для туристов и деловых путешественников." wrappingWidth="831.13671875">
          <font>
-            <Font size="14.0" />
+            <Font name="System Bold Italic" size="14.0" />
          </font>
       </Text>
       <Text fill="WHITE" layoutX="66.0" layoutY="217.0" strokeType="OUTSIDE" strokeWidth="0.0" text="     Люкс номера — воплощение роскоши и элегантности. Просторные апартаменты с изысканным дизайном интерьера предлагают гостям высочайший уровень комфорта. В каждом люкс номере имеется отдельная гостиная зона, просторная спальня и современная ванная комната с джакузи. Дополнительно предоставляются VIP-услуги, включая персональное обслуживание и доступ в эксклюзивные зоны отеля." wrappingWidth="831.13671875">
          <font>
-            <Font size="14.0" />
+            <Font name="System Bold Italic" size="14.0" />
          </font>
       </Text>
       <Text fill="WHITE" layoutX="66.0" layoutY="291.0" strokeType="OUTSIDE" strokeWidth="0.0" text="     Бизнес номера — специально разработаны для деловых путешественников, которым важны удобство и продуктивность. Оборудованные высокоскоростным интернетом, рабочими столами и комфортными креслами, эти номера создают идеальные условия для работы и отдыха. Также в пакет услуг входит доступ в бизнес-центр отеля, где можно провести деловые встречи и конференции." wrappingWidth="831.13671875">
          <font>
-            <Font size="14.0" />
+            <Font name="System Bold Italic" size="14.0" />
          </font>
       </Text>
       <Text fill="WHITE" layoutX="66.0" layoutY="365.0" strokeType="OUTSIDE" strokeWidth="0.0" text="     Наш отель гордится своим внимательным персоналом, готовым сделать ваш отдых максимально приятным и беззаботным. У нас вы найдете все условия для комфортного проживания, будь то деловая поездка или отдых с семьей." wrappingWidth="831.13671875">
          <font>
-            <Font size="14.0" />
+            <Font name="System Bold Italic" size="14.0" />
          </font>
       </Text>
       <Button fx:id="B1" layoutX="396.0" layoutY="408.0" mnemonicParsing="false" prefHeight="37.0" prefWidth="172.0" text=" Посмотреть номера" textFill="RED" />
