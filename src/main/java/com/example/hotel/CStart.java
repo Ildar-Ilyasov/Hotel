@@ -47,7 +47,7 @@ public class CStart {
                     userId = resultSet.getLong("id");
                     Session.setCurrentUserId(Long.valueOf(userId));
                     FXMLLoader loader = new FXMLLoader();
-                    loader.setLocation(getClass().getResource("Menu.fxml"));
+                    loader.setLocation(getClass().getResource("BookingMenu.fxml"));
                     loader.load();
                     Parent root = loader.getRoot();
                     Stage stage = new Stage();
