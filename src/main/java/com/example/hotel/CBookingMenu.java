@@ -43,15 +43,15 @@ public class CBookingMenu {
 
     @FXML
     void initialize() {
+        imageView.setImage(new Image(images[currentImageIndex]));
+        BackImage.setOnAction(e -> showPreviousImage());
+        NextImage.setOnAction(e -> showNextImage());
+
         Checkin.setValue(LocalDate.now());
         Class.setValue("Выберите класс");
         CountPeople.setValue("Выберите количество");
         Class.setItems(ClassList);
         CountPeople.setItems(CountPeopleList);
-        imageView.setImage(new Image(images[currentImageIndex]));
-
-        BackImage.setOnAction(e -> showPreviousImage());
-        NextImage.setOnAction(e -> showNextImage());
         B1.setOnAction(e -> {
             Start start = new Start();
             try {
@@ -62,56 +62,46 @@ public class CBookingMenu {
             }
         });
         B2.setOnAction(e -> {
-            if (!Class.getValue().equals("Выберите класс") && !CountPeople.getValue().equals("Выберите количество") &&
-                    Exit.getValue() != null && Exit.getValue().isAfter(Checkin.getValue())) {
-                LocalDate date1 = Checkin.getValue();
-                LocalDate date2 = Exit.getValue();
-                int classNum;
-                int countPeople;
-                int costResult;
-                long daysBetween = ChronoUnit.DAYS.between(date1, date2);
-                switch (Class.getValue()) {
-                    case "Эконом":
+            if (Class.getValue() != "Выберите класс" && CountPeople.getValue() != "Выберите количество" && Exit.getValue() != null && Exit.getValue().isAfter(Checkin.getValue())) {
+                if (Checkin != null && Exit != null) {
+                    LocalDate date1 = Checkin.getValue();
+                    LocalDate date2 = Exit.getValue();
+                    int classNum = 0;
+                    int countPeople = 0;
+                    int costResult = 0;
+                    long daysBetween = ChronoUnit.DAYS.between(date1, date2);
+                    if (Class.getValue() == "Эконом")
                         classNum = 1150;
-                        break;
-                    case "Люкс":
+                    else if (Class.getValue() == "Люкс")
                         classNum = 2500;
-                        break;
-                    case "Бизнес":
+                    else if (Class.getValue() == "Бизнес")
                         classNum = 3550;
-                        break;
-                    default:
-                        classNum = 0;
-                        break;
-                }
-                switch (CountPeople.getValue()) {
-                    case "1":
+
+                    if (CountPeople.getValue() == "1")
                         countPeople = 800;
-                        break;
-                    case "2":
+                    else if (CountPeople.getValue() == "2")
                         countPeople = 1200;
-                        break;
-                    case "3":
+                    else if (CountPeople.getValue() == "3")
                         countPeople = 1750;
-                        break;
-                    case "4":
+                    else if (CountPeople.getValue() == "4")
                         countPeople = 2500;
-                        break;
-                    default:
-                        countPeople = 0;
-                        break;
+
+                    costResult = (int) (daysBetween * (classNum + countPeople));
+                    Cost.setText(String.valueOf(costResult));
+
                 }
-                costResult = (int) (daysBetween * (classNum + countPeople));
-                Cost.setText(String.valueOf(costResult));
-            } else {
-                showAlert("Ошибка", "Поля не могут быть пустыми!");
+            }
+            else {
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setHeaderText("Ошибка");
+                alert.setContentText("Поля не могут быть пустыми!");
+                alert.showAndWait();
             }
         });
         B3.setOnAction(e -> {
-            if (!Class.getValue().equals("Выберите класс") && !CountPeople.getValue().equals("Выберите количество") &&
-                    !Cost.getText().isEmpty() && Exit.getValue().isAfter(Checkin.getValue())) {
+            if (Class.getValue() != "Выберите класс" && CountPeople.getValue() != "Выберите количество" && !Cost.getText().isEmpty() && Exit.getValue().isAfter(Checkin.getValue())) {
                 try (Connection connection = DriverManager.getConnection("jdbc:postgresql://localhost:5432/Hotel", "postgres", "1111")) {
-                    String query = "INSERT INTO booking (arrival_date, departure_date, amount_people, quality, cost, fk_user_id) VALUES (?, ?, ?, ?, ?, ?) RETURNING id";
+                    String query = "INSERT INTO booking (arrival_date, departure_date, amoun_people, quality, cost, fk_user_id) VALUES (?, ?, ?, ?, ?, ?) RETURNING id";
                     try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
                         preparedStatement.setDate(1, java.sql.Date.valueOf(Checkin.getValue()));
                         preparedStatement.setDate(2, java.sql.Date.valueOf(Exit.getValue()));
@@ -132,12 +122,19 @@ public class CBookingMenu {
                             }
                         }
                     }
-                    showAlert("Заявка принята!", "Хорошего отдыха!");
+                    Alert successAlert = new Alert(Alert.AlertType.INFORMATION);
+                    successAlert.setHeaderText("Заявка принята!");
+                    successAlert.setContentText("Хорошего отдыха!");
+                    successAlert.showAndWait();
                 } catch (SQLException ex) {
-                    System.out.println("Ошибка при работе с базой данных: " + ex.getMessage());
+                    System.out.println("Error when working with the database: " + ex.getMessage());
                 }
-            } else {
-                showAlert("Ошибка", "Поля не могут быть пустыми!");
+            }
+            else {
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setHeaderText("Ошибка");
+                alert.setContentText("Поля не могут быть пустыми!");
+                alert.showAndWait();
             }
         });
     }
@@ -150,12 +147,5 @@ public class CBookingMenu {
     private void showNextImage() {
         currentImageIndex = (currentImageIndex + 1) % images.length;
         imageView.setImage(new Image(images[currentImageIndex]));
-    }
-
-    private void showAlert(String headerText, String contentText) {
-        Alert alert = new Alert(Alert.AlertType.ERROR);
-        alert.setHeaderText(headerText);
-        alert.setContentText(contentText);
-        alert.showAndWait();
     }
 }

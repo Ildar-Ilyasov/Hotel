@@ -11,6 +11,7 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
+
 import java.io.IOException;
 import java.sql.*;
 
@@ -27,6 +28,7 @@ public class CAdminRequestMenu {
     @FXML private TableColumn<TableRequest, String> costColumn;
     @FXML private TableColumn<TableRequest, String> countColumn;
     @FXML private TableColumn<TableRequest, String> roomColumn;
+
     @FXML
     void initialize() throws SQLException {
         UpdateDatabase();
@@ -52,12 +54,15 @@ public class CAdminRequestMenu {
             deleteSelectedItem();
         });
     }
+
     private void openChoiceRoomWindow(TableRequest selectedProduct) {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("ChoiceRoom.fxml"));
             Parent root = loader.load();
+
             CChoiceRoom controller = loader.getController();
-            controller.initData(selectedProduct, this); // Передаем текущий контроллер
+            controller.initData(selectedProduct, this);
+
             Stage stage = new Stage();
             stage.setScene(new Scene(root));
             stage.show();
@@ -65,6 +70,7 @@ public class CAdminRequestMenu {
             throw new RuntimeException(ex);
         }
     }
+
     private void deleteSelectedItem() {
         TableRequest selectedProduct = RequestView.getSelectionModel().getSelectedItem();
 
@@ -79,14 +85,11 @@ public class CAdminRequestMenu {
         String deleteBookingQuery = "DELETE FROM booking WHERE id = ?";
 
         try (Connection connection = DriverManager.getConnection("jdbc:postgresql://localhost:5432/Hotel", "postgres", "1111")) {
-            // Удаляем из request_date
             try (PreparedStatement requestStatement = connection.prepareStatement(deleteRequestQuery)) {
                 requestStatement.setLong(1, selectedProduct.getUserId());
                 requestStatement.setLong(2, selectedProduct.getBookingId());
                 requestStatement.executeUpdate();
             }
-
-            // Удаляем из booking
             try (PreparedStatement bookingStatement = connection.prepareStatement(deleteBookingQuery)) {
                 bookingStatement.setLong(1, selectedProduct.getBookingId());
                 bookingStatement.executeUpdate();
@@ -135,14 +138,13 @@ public class CAdminRequestMenu {
                 String roomId = requestResultSet.getString("room_id");
 
                 String userName = "";
-                userResultSet.beforeFirst(); // Reset ResultSet
+                userResultSet.beforeFirst();
                 while (userResultSet.next()) {
                     if (userResultSet.getLong("id") == userId) {
                         userName = userResultSet.getString("name");
                         break;
                     }
                 }
-
                 String arrivalDate = "";
                 String departureDate = "";
                 String quality = "";
@@ -163,7 +165,6 @@ public class CAdminRequestMenu {
                 if(roomId == null){
                     TableRequest request = new TableRequest(requestId, userName, arrivalDate, departureDate, quality, amountPeople, cost, roomId, userId, bookingId);
                     requestList.add(request);
-                    // Отладка вывода
                     System.out.println("Added request: " + request);
                 }}
 
