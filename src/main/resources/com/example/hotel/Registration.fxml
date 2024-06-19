@@ -12,7 +12,7 @@
    <children>
       <ImageView fitHeight="667.0" fitWidth="1027.0" layoutX="-1.0" layoutY="-10.0" pickOnBounds="true" preserveRatio="true">
          <image>
-            <Image url="@res/1.jpg" />
+            <Image url="@res/Reseption.jpg" />
          </image>
       </ImageView>
       <TextField fx:id="TF1" layoutX="337.0" layoutY="219.0" prefHeight="25.0" prefWidth="327.0" promptText="Имя" />

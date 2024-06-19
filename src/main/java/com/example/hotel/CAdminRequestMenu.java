@@ -11,7 +11,6 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
-
 import java.io.IOException;
 import java.sql.*;
 
@@ -28,7 +27,6 @@ public class CAdminRequestMenu {
     @FXML private TableColumn<TableRequest, String> costColumn;
     @FXML private TableColumn<TableRequest, String> countColumn;
     @FXML private TableColumn<TableRequest, String> roomColumn;
-
     @FXML
     void initialize() throws SQLException {
         UpdateDatabase();
@@ -54,15 +52,12 @@ public class CAdminRequestMenu {
             deleteSelectedItem();
         });
     }
-
     private void openChoiceRoomWindow(TableRequest selectedProduct) {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("ChoiceRoom.fxml"));
             Parent root = loader.load();
-
             CChoiceRoom controller = loader.getController();
             controller.initData(selectedProduct, this); // Передаем текущий контроллер
-
             Stage stage = new Stage();
             stage.setScene(new Scene(root));
             stage.show();
@@ -70,7 +65,6 @@ public class CAdminRequestMenu {
             throw new RuntimeException(ex);
         }
     }
-
     private void deleteSelectedItem() {
         TableRequest selectedProduct = RequestView.getSelectionModel().getSelectedItem();
 
@@ -123,7 +117,6 @@ public class CAdminRequestMenu {
              Statement roomStatement = connection.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
              ResultSet roomResultSet = roomStatement.executeQuery(roomQuery)) {
 
-            // Prepare cell value factories
             idColumn.setCellValueFactory(new PropertyValueFactory<>("id"));
             nameColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
             entryColumn.setCellValueFactory(new PropertyValueFactory<>("entry"));
@@ -150,13 +143,12 @@ public class CAdminRequestMenu {
                     }
                 }
 
-                // Get booking details
                 String arrivalDate = "";
                 String departureDate = "";
                 String quality = "";
                 String amountPeople = "";
                 String cost = "";
-                bookingResultSet.beforeFirst(); // Reset ResultSet
+                bookingResultSet.beforeFirst();
                 while (bookingResultSet.next()) {
                     if (bookingResultSet.getLong("id") == bookingId) {
                         arrivalDate = bookingResultSet.getString("arrival_date");
@@ -171,7 +163,7 @@ public class CAdminRequestMenu {
                 if(roomId == null){
                     TableRequest request = new TableRequest(requestId, userName, arrivalDate, departureDate, quality, amountPeople, cost, roomId, userId, bookingId);
                     requestList.add(request);
-                    // Debug output
+                    // Отладка вывода
                     System.out.println("Added request: " + request);
                 }}
 

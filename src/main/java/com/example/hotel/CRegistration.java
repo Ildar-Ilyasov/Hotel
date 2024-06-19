@@ -4,6 +4,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
@@ -55,18 +56,10 @@ public class CRegistration {
                 }
             }
             else{
-                try {
-                    FXMLLoader loader = new FXMLLoader();
-                    loader.setLocation(getClass().getResource("ErrorReg.fxml"));
-                    loader.load();
-                    Parent root = loader.getRoot();
-                    Stage stage = new Stage();
-                    stage.setScene(new Scene(root));
-                    stage.show();
-                }
-                catch (IOException ex) {
-                    throw new RuntimeException(ex);
-                }
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setHeaderText("Ошибка");
+                alert.setContentText("Поля не могут быть пустыми!");
+                alert.showAndWait();
             }
         });
         BClose.setOnAction(e -> {

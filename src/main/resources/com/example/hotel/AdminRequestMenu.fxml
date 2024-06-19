@@ -12,7 +12,7 @@
    <children>
       <ImageView fitHeight="667.0" fitWidth="1027.0" layoutX="-2.0" pickOnBounds="true" preserveRatio="true">
          <image>
-            <Image url="@res/1.jpg" />
+            <Image url="@res/Reseption.jpg" />
          </image>
       </ImageView>
       <Button fx:id="BackButton" layoutX="24.0" layoutY="24.0" mnemonicParsing="false" text="Закрыть" textFill="RED">

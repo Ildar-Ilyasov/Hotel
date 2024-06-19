@@ -4,6 +4,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
@@ -57,13 +58,10 @@ public class CStart {
 
                 }
                 else {
-                    FXMLLoader loader = new FXMLLoader();
-                    loader.setLocation(getClass().getResource("Error.fxml"));
-                    loader.load();
-                    Parent root = loader.getRoot();
-                    Stage stage = new Stage();
-                    stage.setScene(new Scene(root));
-                    stage.show();
+                    Alert alert = new Alert(Alert.AlertType.ERROR);
+                    alert.setHeaderText("Ошибка");
+                    alert.setContentText("Неверный логин или пароль!");
+                    alert.showAndWait();
                 }
             } catch (SQLException ex) {
                 ex.printStackTrace();

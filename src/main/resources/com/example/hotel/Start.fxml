@@ -13,7 +13,7 @@
    <children>
       <ImageView fitHeight="667.0" fitWidth="1027.0" layoutX="-2.0" layoutY="-6.0" pickOnBounds="true" preserveRatio="true">
          <image>
-            <Image url="@res/1.jpg" />
+            <Image url="@res/Reseption.jpg" />
          </image></ImageView>
       <Button fx:id="B1" layoutX="361.0" layoutY="293.0" mnemonicParsing="false" prefHeight="34.0" prefWidth="102.0" text="Войти" textFill="RED">
          <font>
