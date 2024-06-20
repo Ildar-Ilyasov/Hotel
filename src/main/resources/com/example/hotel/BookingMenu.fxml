@@ -36,22 +36,22 @@
          </font>
       </Text>
       <ChoiceBox fx:id="Class" layoutX="113.0" layoutY="208.0" prefHeight="25.0" prefWidth="174.0" />
-      <Text fill="WHITE" layoutX="113.0" layoutY="373.0" stroke="#f20000" strokeType="OUTSIDE" strokeWidth="0.0" text="Цена" wrappingWidth="97.13671875">
+      <Text fill="WHITE" layoutX="113.0" layoutY="358.0" stroke="#f20000" strokeType="OUTSIDE" strokeWidth="0.0" text="Цена" wrappingWidth="97.13671875">
          <font>
             <Font size="18.0" />
          </font>
       </Text>
-      <Button fx:id="B2" layoutX="113.0" layoutY="320.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="174.0" text="Посчитать цену" textFill="RED" />
-      <Button fx:id="B3" layoutX="113.0" layoutY="418.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="174.0" text="Забронировать" textFill="RED" />
-      <Text fill="WHITE" layoutX="113.0" layoutY="270.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Количество людей" wrappingWidth="174.0">
+      <Button fx:id="B2" layoutX="113.0" layoutY="305.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="174.0" text="Посчитать цену" textFill="RED" />
+      <Button fx:id="B3" layoutX="113.0" layoutY="390.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="174.0" text="Забронировать" textFill="RED" />
+      <Text fill="WHITE" layoutX="113.0" layoutY="263.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Количество людей" wrappingWidth="174.0">
          <font>
             <Font size="18.0" />
          </font>
       </Text>
-      <ChoiceBox fx:id="CountPeople" layoutX="113.0" layoutY="277.0" prefHeight="25.0" prefWidth="174.0" />
-      <Label fx:id="Cost" layoutX="113.0" layoutY="386.0" prefHeight="17.0" prefWidth="174.0" textFill="WHITE">
+      <ChoiceBox fx:id="CountPeople" layoutX="113.0" layoutY="270.0" prefHeight="25.0" prefWidth="174.0" />
+      <Label fx:id="Cost" layoutX="113.0" layoutY="363.0" prefHeight="17.0" prefWidth="174.0" textFill="WHITE">
          <font>
-            <Font size="18.0" />
+            <Font name="System Italic" size="18.0" />
          </font>
       </Label>
       <ImageView fx:id="imageView" fitHeight="500.0" fitWidth="500.0" layoutX="442.0" preserveRatio="true">
