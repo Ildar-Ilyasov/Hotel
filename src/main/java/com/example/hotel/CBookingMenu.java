@@ -12,6 +12,8 @@ import java.io.IOException;
 import java.sql.*;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class CBookingMenu {
     @FXML
@@ -39,10 +41,18 @@ public class CBookingMenu {
     private final ObservableList<String> ClassList = FXCollections.observableArrayList("Эконом", "Люкс", "Бизнес");
     private final ObservableList<String> CountPeopleList = FXCollections.observableArrayList("1", "2", "3", "4");
     private int currentImageIndex = 0;
-    private final String[] images = {"C:\\Files\\project\\Hotel\\src\\main\\resources\\com\\example\\hotel\\res/Economy.jpg", "C:\\Files\\project\\Hotel\\src\\main\\resources\\com\\example\\hotel\\res/Luxury.jpg", "C:\\Files\\project\\Hotel\\src\\main\\resources\\com\\example\\hotel\\res/Business.jpg"};
+    private final String[] images = {
+            "C:\\Files\\project\\Hotel\\src\\main\\resources\\com\\example\\hotel\\res/Economy.jpg",
+            "C:\\Files\\project\\Hotel\\src\\main\\resources\\com\\example\\hotel\\res/Luxury.jpg",
+            "C:\\Files\\project\\Hotel\\src\\main\\resources\\com\\example\\hotel\\res/Business.jpg"
+    };
+
+    private static final Logger logger = Logger.getLogger(CBookingMenu.class.getName());
 
     @FXML
     void initialize() {
+        logger.info("Opening the booking menu");
+
         imageView.setImage(new Image(images[currentImageIndex]));
         BackImage.setOnAction(e -> showPreviousImage());
         NextImage.setOnAction(e -> showNextImage());
@@ -52,16 +62,21 @@ public class CBookingMenu {
         CountPeople.setValue("Выберите количество");
         Class.setItems(ClassList);
         CountPeople.setItems(CountPeopleList);
+
         B1.setOnAction(e -> {
+            logger.info("The Back button is pressed");
             Start start = new Start();
             try {
                 start.start(new Stage());
                 B1.getScene().getWindow().hide();
             } catch (IOException ex) {
+                logger.log(Level.SEVERE, "The window could not be opened", ex);
                 throw new RuntimeException(ex);
             }
         });
+
         B2.setOnAction(e -> {
+            logger.info("The cost calculation button is pressed");
             if (Class.getValue() != "Выберите класс" && CountPeople.getValue() != "Выберите количество" && Exit.getValue() != null && Exit.getValue().isAfter(Checkin.getValue())) {
                 if (Checkin != null && Exit != null) {
                     LocalDate date1 = Checkin.getValue();
@@ -70,6 +85,8 @@ public class CBookingMenu {
                     int countPeople = 0;
                     int costResult = 0;
                     long daysBetween = ChronoUnit.DAYS.between(date1, date2);
+
+                    logger.info("Cost calculation");
                     if (Class.getValue() == "Эконом")
                         classNum = 1150;
                     else if (Class.getValue() == "Люкс")
@@ -88,19 +105,23 @@ public class CBookingMenu {
 
                     costResult = (int) (daysBetween * (classNum + countPeople));
                     Cost.setText(String.valueOf(costResult));
+                    logger.info("Calculated cost: " + costResult);
 
                 }
-            }
-            else {
+            } else {
+                logger.warning("Incorrect data entry for cost calculation");
                 Alert alert = new Alert(Alert.AlertType.ERROR);
                 alert.setHeaderText("Ошибка");
                 alert.setContentText("Поля не могут быть пустыми!");
                 alert.showAndWait();
             }
         });
+
         B3.setOnAction(e -> {
+            logger.info("The Book button is pressed");
             if (Class.getValue() != "Выберите класс" && CountPeople.getValue() != "Выберите количество" && !Cost.getText().isEmpty() && Exit.getValue().isAfter(Checkin.getValue())) {
                 try (Connection connection = DriverManager.getConnection("jdbc:postgresql://localhost:5432/Hotel", "postgres", "1111")) {
+                    logger.info("Connecting to the database");
                     String query = "INSERT INTO booking (arrival_date, departure_date, amoun_people, quality, cost, fk_user_id) VALUES (?, ?, ?, ?, ?, ?) RETURNING id";
                     try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
                         preparedStatement.setDate(1, java.sql.Date.valueOf(Checkin.getValue()));
@@ -113,6 +134,7 @@ public class CBookingMenu {
                         try (ResultSet rs = preparedStatement.executeQuery()) {
                             if (rs.next()) {
                                 long bookingId = rs.getLong("id");
+                                logger.info("Successful booking, ID: " + bookingId);
                                 String requestQuery = "INSERT INTO request_date (user_id, booking_id) VALUES (?, ?)";
                                 try (PreparedStatement requestStatement = connection.prepareStatement(requestQuery)) {
                                     requestStatement.setLong(1, Session.getCurrentUserId());
@@ -129,8 +151,7 @@ public class CBookingMenu {
                 } catch (SQLException ex) {
                     System.out.println("Error when working with the database: " + ex.getMessage());
                 }
-            }
-            else {
+            } else {
                 Alert alert = new Alert(Alert.AlertType.ERROR);
                 alert.setHeaderText("Ошибка");
                 alert.setContentText("Поля не могут быть пустыми!");
